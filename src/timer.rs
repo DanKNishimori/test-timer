@@ -47,7 +47,7 @@ impl Timer {
         }
     }
 
-    pub fn has_stared(&self) -> bool {
+    pub fn has_started(&self) -> bool {
         self.start_time.is_some()
     }
     pub fn time_left(&self) -> Duration {
@@ -75,14 +75,13 @@ impl Timer {
             play_alarm();
 
             thread::sleep(Duration::from_secs(1));
-
-            if self.stages.peek_next().is_some() {
-                self.stages.next();
-            } else if loop_enabled {
-                self.stages.reset();
-            } else {
+            let next_stage = self.stages.next();
+            if next_stage.is_none() && !loop_enabled {
                 self.reset(true);
                 return;
+            }
+            if loop_enabled && next_stage.is_none() {
+                self.stages.reset();
             }
             self.start_time = Some(Instant::now());
         }

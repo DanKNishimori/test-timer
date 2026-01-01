@@ -60,6 +60,10 @@ impl Stages {
         }
     }
 
+    pub fn len(&self) -> usize {
+        self.iter.len()
+    }
+
     pub fn get_current(&self) -> Option<Stage> {
         match self.iter.get(self.id) {
             Some(s) => Some(s.clone()),
@@ -67,9 +71,9 @@ impl Stages {
         }
     }
 
-    pub fn peek_next(&self) -> Option<Stage> {
-        match self.iter.get(self.id + 1) {
-            Some(s) => Some(s.clone()),
+    pub fn get_mut(&mut self, index: usize) -> Option<&mut Stage> {
+        match self.iter.get_mut(index) {
+            Some(s) => Some(s),
             None => None,
         }
     }
